@@ -647,6 +647,8 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
         p.all_seeds = seed
     else:
         p.all_seeds = [int(seed) + (x if p.subseed_strength == 0 else 0) for x in range(len(p.all_prompts))]
+        if hasattr(p, "img2img_batch_parallel") and p.img2img_batch_parallel:
+            p.all_seeds = [int(seed) for x in range(len(p.all_prompts))]
 
     if type(subseed) == list:
         p.all_subseeds = subseed
