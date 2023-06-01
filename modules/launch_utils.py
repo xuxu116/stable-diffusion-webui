@@ -13,6 +13,7 @@ from modules.paths_internal import script_path, extensions_dir
 args, _ = cmd_args.parser.parse_known_args()
 
 python = sys.executable
+print("python version: ", python)
 git = os.environ.get('GIT', "git")
 index_url = os.environ.get('INDEX_URL', "")
 dir_repos = "repositories"
