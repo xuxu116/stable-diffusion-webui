@@ -39,6 +39,7 @@ def process_batch_parallel(p, input_dir, output_dir, inpaint_mask_dir, args):
     print(f"Will process {len(images)} images in {len(imgbatch)} batchs, creating {p.n_iter * p.batch_size} new images for each.")        
     
     for i, image in enumerate(imgbatch):
+        p.current_batch_xl = i
         state.job = f"{i+1} out of {len(imgbatch)} with batchsize {len(image)}"
         if len(image) < p.batch_size:
             p.batch_size = len(image) 
