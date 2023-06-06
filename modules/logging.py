@@ -1,6 +1,8 @@
 import logging
 import copy
 import sys
+from time import perf_counter
+from collections import defaultdict
 
 from modules import shared
 
@@ -41,3 +43,23 @@ def get_logger(logger_name):
     loglevel = getattr(logging, loglevel_string.upper(), None)
     logger.setLevel(loglevel)
     return logger
+
+
+class Timer:
+    def __init__(self, window=10):
+        self.window = window
+        self.tictime = defaultdict(float)
+        self.time = defaultdict(list)
+    
+    def tic(self, name):
+        self.tictime[name] = perf_counter()
+    
+    def toc(self, name):
+        self.time[name].append(perf_counter() - self.tictime[name])
+        
+    def avetime(self, name):
+        difference = self.time[name][-self.window:]
+        return sum(difference) / len(difference)
+    
+    def totaltime(self, name):
+        return sum(self.time[name])
