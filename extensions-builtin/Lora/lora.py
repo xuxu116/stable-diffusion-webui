@@ -4,6 +4,7 @@ import torch
 from typing import Union
 
 from modules import shared, devices, sd_models, errors, scripts, sd_hijack, hashes
+from modules.logging import get_logger
 
 metadata_tags_order = {"ss_sd_model_name": 1, "ss_resolution": 2, "ss_clip_skip": 3, "ss_num_train_images": 10, "ss_tag_frequency": 20}
 
@@ -21,6 +22,7 @@ suffix_conversion = {
     }
 }
 
+logger = get_logger("Lora[builtin]")
 
 def convert_diffusers_name_to_compvis(key, is_sd2):
     def match(match_list, regex_text):
@@ -263,6 +265,8 @@ def load_loras(names, multipliers=None):
             failed_to_load_loras.append(name)
             print(f"Couldn't find Lora with name {name}")
             continue
+    
+        logger.info(f"[lora.py] Load Lora with name {name}")
 
         lora.multiplier = multipliers[i] if multipliers else 1.0
         loaded_loras.append(lora)
